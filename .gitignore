@@ -217,3 +217,11 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 sklearn142_env/
+# SageMaker deployment artifacts
+request.json
+response.json
+sagemaker/*.tar.gz
+sagemaker/inspect_v7/
+sagemaker/model_package_v4/
+sagemaker/package_v5/
+sagemaker/test_v5/
