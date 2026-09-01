@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ChurnIQ | Customer Retention</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f5f2;
+            color: #252a27;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #dedfdb;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            background: #26382f;
+            color: white;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+        }
+
+        .brand-subtitle {
+            color: #7b817d;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #66706a;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4d8a63;
+            border-radius: 50%;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: 88%;
+            max-width: 1180px;
+            margin: 42px auto 70px;
+        }
+
+        .intro {
+            margin-bottom: 28px;
+        }
+
+        .intro h1 {
+            font-size: 32px;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .intro p {
+            color: #727873;
+            font-size: 15px;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           CUSTOMER SELECTOR
+        ========================= */
+
+        .selector-card {
+            background: white;
+            border: 1px solid #dedfdb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .selector-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #69706b;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 10px;
+        }
+
+        .selector-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        select {
+            flex: 1;
+            height: 46px;
+            padding: 0 14px;
+            border: 1px solid #cfd2ce;
+            border-radius: 8px;
+            background: white;
+            color: #303632;
+            font-size: 14px;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #718277;
+        }
+
+        button {
+            height: 46px;
+            padding: 0 24px;
+            border: none;
+            border-radius: 8px;
+            background: #26382f;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #1e2d26;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================
+           CUSTOMER AREA
+        ========================= */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.45fr 0.85fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #dedfdb;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .card-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .card-heading h2 {
+            font-size: 17px;
+        }
+
+        .customer-id {
+            font-size: 12px;
+            color: #7a817c;
+            background: #f1f2ef;
+            padding: 6px 9px;
+            border-radius: 6px;
+        }
+
+
+        /* =========================
+           CUSTOMER DETAILS
+        ========================= */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 17px;
+        }
+
+        .detail {
+            border-bottom: 1px solid #ecece9;
+            padding-bottom: 13px;
+        }
+
+        .detail-label {
+            color: #858b87;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #303632;
+        }
+
+
+        /* =========================
+           PREDICTION CARD
+        ========================= */
+
+        .prediction-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prediction-label {
+            color: #858b87;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .prediction-result {
+            font-size: 27px;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .risk-low {
+            color: #39724d;
+        }
+
+        .risk-medium {
+            color: #a06b22;
+        }
+
+        .risk-high {
+            color: #a63f3f;
+        }
+
+
+        /* =========================
+           PROBABILITY
+        ========================= */
+
+        .probability-section {
+            margin-top: 10px;
+        }
+
+        .probability-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .probability-header span:first-child {
+            color: #69706b;
+        }
+
+        .probability-value {
+            font-weight: 700;
+        }
+
+        .bar-background {
+            height: 9px;
+            background: #e8e9e6;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            width: 0%;
+            background: #9b5550;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+
+        /* =========================
+           SECOND PROBABILITY
+        ========================= */
+
+        .no-churn {
+            margin-top: 20px;
+        }
+
+        .no-churn .bar {
+            background: #557762;
+        }
+
+
+        /* =========================
+           INITIAL STATE
+        ========================= */
+
+        .empty-state {
+            color: #858b87;
+            text-align: center;
+            padding: 55px 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .empty-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            background: #eef0ed;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading {
+            display: none;
+            margin-top: 15px;
+            color: #727873;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error {
+            display: none;
+            background: #f8eaea;
+            border: 1px solid #e4caca;
+            color: #8e4141;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            width: 88%;
+            max-width: 1180px;
+            margin: 0 auto 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dedfdb;
+            color: #8a908b;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            main {
+                width: 92%;
+                margin-top: 30px;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .selector-row {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 15px 4%;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .intro h1 {
+                font-size: 27px;
+            }
+
+            footer {
+                width: 92%;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            CI
+        </div>
+
+        <div>
+
+            <div class="brand-name">
+                ChurnIQ
+            </div>
+
+            <div class="brand-subtitle">
+                Customer Retention Analysis
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="status">
+
+        <span class="status-dot"></span>
+
+        Prediction service ready
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main>
+
+
+    <section class="intro">
+
+        <h1>
+            Customer overview
+        </h1>
+
+        <p>
+            Select a customer from the dataset to review their profile
+            and estimate their likelihood of leaving the service.
+        </p>
+
+    </section>
+
+
+
+    <!-- CUSTOMER SELECTOR -->
+
+    <section class="selector-card">
+
+        <div class="selector-title">
+            Choose customer
+        </div>
+
+
+        <div class="selector-row">
+
+            <select id="customerSelect">
+
+                <option value="">
+                    Loading customers...
+                </option>
+
+            </select>
+
+
+            <button
+                id="loadCustomerButton"
+                onclick="loadCustomer()"
+                disabled
+            >
+                View customer
+            </button>
+
+        </div>
+
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            Loading customer information...
+        </div>
+
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+    </section>
+
+
+
+    <!-- DASHBOARD -->
+
+    <section
+        id="dashboard"
+        class="dashboard"
+        style="display:none;"
+    >
+
+
+        <!-- CUSTOMER INFORMATION -->
+
+        <div class="card">
+
+            <div class="card-heading">
+
+                <h2>
+                    Customer information
+                </h2>
+
+                <span
+                    id="customerId"
+                    class="customer-id"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Gender
+                    </div>
+
+                    <div
+                        id="gender"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Senior citizen
+                    </div>
+
+                    <div
+                        id="seniorCitizen"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Partner
+                    </div>
+
+                    <div
+                        id="partner"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Dependents
+                    </div>
+
+                    <div
+                        id="dependents"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Tenure
+                    </div>
+
+                    <div
+                        id="tenure"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Contract
+                    </div>
+
+                    <div
+                        id="contract"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Internet service
+                    </div>
+
+                    <div
+                        id="internetService"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Monthly charges
+                    </div>
+
+                    <div
+                        id="monthlyCharges"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Total charges
+                    </div>
+
+                    <div
+                        id="totalCharges"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Payment method
+                    </div>
+
+                    <div
+                        id="paymentMethod"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Phone service
+                    </div>
+
+                    <div
+                        id="phoneService"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Paperless billing
+                    </div>
+
+                    <div
+                        id="paperlessBilling"
+                        class="detail-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PREDICTION -->
+
+        <div class="card prediction-card">
+
+            <div class="card-heading">
+
+                <h2>
+                    Churn assessment
+                </h2>
+
+            </div>
+
+
+            <div class="empty-state" id="predictionEmpty">
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+                <div>
+                    Customer loaded.<br>
+                    Run the prediction to see the result.
+                </div>
+
+            </div>
+
+
+            <div
+                id="predictionContent"
+                style="display:none;"
+            >
+
+                <div class="prediction-label">
+                    Prediction
+                </div>
+
+                <div
+                    id="predictionResult"
+                    class="prediction-result"
+                >
+                    -
+                </div>
+
+
+                <div class="probability-section">
+
+                    <div class="probability-header">
+
+                        <span>
+                            Churn probability
+                        </span>
+
+                        <span
+                            id="churnProbability"
+                            class="probability-value"
+                        >
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div class="bar-background">
+
+                        <div
+                            id="churnBar"
+                            class="bar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="probability-section no-churn">
+
+                    <div class="probability-header">
+
+                        <span>
+                            No-churn probability
+                        </span>
+
+                        <span
+                            id="noChurnProbability"
+                            class="probability-value"
+                        >
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div class="bar-background">
+
+                        <div
+                            id="noChurnBar"
+                            class="bar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="predictButton"
+                onclick="predictCustomer()"
+                style="margin-top:auto;"
+                disabled
+            >
+                Check churn
+            </button>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    <span>
+        ChurnIQ Customer Retention Analysis
+    </span>
+
+    <span>
+        Machine Learning Prediction System
+    </span>
+
+</footer>
+
+
+
+<script>
+
+
+/* ============================================================
+   GLOBAL CUSTOMER DATA
+============================================================ */
+
+let currentCustomer = null;
+
+
+
+/* ============================================================
+   LOAD CUSTOMER LIST
+============================================================ */
+
+async function loadCustomers() {
+
+    const select =
+        document.getElementById("customerSelect");
+
+    const button =
+        document.getElementById("loadCustomerButton");
+
+
+    try {
+
+        const response =
+            await fetch("/customers");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load customers."
+            );
+
+        }
+
+
+        const customers =
+            await response.json();
+
+
+        select.innerHTML =
+            '<option value="">Select a customer</option>';
+
+
+        customers.forEach(customer => {
+
+            const option =
+                document.createElement("option");
+
+
+            option.value =
+                customer.CustomerID;
+
+
+            option.textContent =
+                customer.CustomerID;
+
+
+            select.appendChild(option);
+
+        });
+
+
+        button.disabled = false;
+
+
+    } catch (error) {
+
+        showError(
+            "Could not load the customer database."
+        );
+
+    }
+
+}
+
+
+
+/* ============================================================
+   LOAD SELECTED CUSTOMER
+============================================================ */
+
+async function loadCustomer() {
+
+    const customerId =
+        document.getElementById(
+            "customerSelect"
+        ).value;
+
+
+    if (!customerId) {
+
+        showError(
+            "Please select a customer first."
+        );
+
+        return;
+
+    }
+
+
+    hideError();
+
+    showLoading(true);
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/customer/${customerId}`
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Customer could not be found."
+            );
+
+        }
+
+
+        const customer =
+            await response.json();
+
+
+        currentCustomer =
+            customer;
+
+
+        displayCustomer(
+            customer
+        );
+
+
+    } catch (error) {
+
+        showError(
+            error.message
+        );
+
+    } finally {
+
+        showLoading(false);
+
+    }
+
+}
+
+
+
+/* ============================================================
+   DISPLAY CUSTOMER
+============================================================ */
+
+function displayCustomer(customer) {
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display = "grid";
+
+
+    document.getElementById(
+        "customerId"
+    ).textContent =
+        customer.CustomerID;
+
+
+    document.getElementById(
+        "gender"
+    ).textContent =
+        customer.gender;
+
+
+    document.getElementById(
+        "seniorCitizen"
+    ).textContent =
+        customer.SeniorCitizen == 1
+            ? "Yes"
+            : "No";
+
+
+    document.getElementById(
+        "partner"
+    ).textContent =
+        customer.Partner;
+
+
+    document.getElementById(
+        "dependents"
+    ).textContent =
+        customer.Dependents;
+
+
+    document.getElementById(
+        "tenure"
+    ).textContent =
+        customer.tenure + " months";
+
+
+    document.getElementById(
+        "contract"
+    ).textContent =
+        customer.Contract;
+
+
+    document.getElementById(
+        "internetService"
+    ).textContent =
+        customer.InternetService;
+
+
+    document.getElementById(
+        "monthlyCharges"
+    ).textContent =
+        "$" +
+        Number(
+            customer.MonthlyCharges
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "totalCharges"
+    ).textContent =
+        "$" +
+        Number(
+            customer.TotalCharges
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "paymentMethod"
+    ).textContent =
+        customer.PaymentMethod;
+
+
+    document.getElementById(
+        "phoneService"
+    ).textContent =
+        customer.PhoneService;
+
+
+    document.getElementById(
+        "paperlessBilling"
+    ).textContent =
+        customer.PaperlessBilling;
+
+
+    document.getElementById(
+        "predictButton"
+    ).disabled = false;
+
+
+    document.getElementById(
+        "predictionEmpty"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "predictionContent"
+    ).style.display = "none";
+
+}
+
+
+
+/* ============================================================
+   PREDICT CUSTOMER
+============================================================ */
+
+async function predictCustomer() {
+
+
+    if (!currentCustomer) {
+
+        showError(
+            "Please select a customer first."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "predictButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Checking...";
+
+
+    hideError();
+
+
+    try {
+
+
+        /*
+         * Remove fields that are not
+         * part of the 19 prediction inputs.
+         */
+
+        const predictionData = {
+
+            gender:
+                currentCustomer.gender,
+
+            SeniorCitizen:
+                currentCustomer.SeniorCitizen,
+
+            Partner:
+                currentCustomer.Partner,
+
+            Dependents:
+                currentCustomer.Dependents,
+
+            tenure:
+                currentCustomer.tenure,
+
+            PhoneService:
+                currentCustomer.PhoneService,
+
+            MultipleLines:
+                currentCustomer.MultipleLines,
+
+            InternetService:
+                currentCustomer.InternetService,
+
+            OnlineSecurity:
+                currentCustomer.OnlineSecurity,
+
+            OnlineBackup:
+                currentCustomer.OnlineBackup,
+
+            DeviceProtection:
+                currentCustomer.DeviceProtection,
+
+            TechSupport:
+                currentCustomer.TechSupport,
+
+            StreamingTV:
+                currentCustomer.StreamingTV,
+
+            StreamingMovies:
+                currentCustomer.StreamingMovies,
+
+            Contract:
+                currentCustomer.Contract,
+
+            PaperlessBilling:
+                currentCustomer.PaperlessBilling,
+
+            PaymentMethod:
+                currentCustomer.PaymentMethod,
+
+            MonthlyCharges:
+                currentCustomer.MonthlyCharges,
+
+            TotalCharges:
+                currentCustomer.TotalCharges
+
+        };
+
+
+        const response =
+            await fetch(
+                "/predict_customer",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            predictionData
+                        )
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Prediction service returned an error."
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        displayPrediction(
+            result
+        );
+
+
+    } catch (error) {
+
+        showError(
+            "Unable to get churn prediction. " +
+            error.message
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Check churn";
+
+    }
+
+}
+
+
+
+/* ============================================================
+   DISPLAY PREDICTION
+============================================================ */
+
+function displayPrediction(result) {
+
+
+    const prediction =
+        Number(
+            result.Churn_prediction
+        );
+
+
+    const churnProbability =
+        Number(
+            result.Probability_churn
+        ) * 100;
+
+
+    const noChurnProbability =
+        Number(
+            result.Probability_no_churn
+        ) * 100;
+
+
+    const predictionResult =
+        document.getElementById(
+            "predictionResult"
+        );
+
+
+    /*
+     * Display prediction
+     */
+
+    if (prediction === 1) {
+
+        predictionResult.textContent =
+            "Likely to churn";
+
+        predictionResult.className =
+            "prediction-result risk-high";
+
+    } else {
+
+        predictionResult.textContent =
+            "Likely to stay";
+
+        predictionResult.className =
+            "prediction-result risk-low";
+
+    }
+
+
+    /*
+     * Display probabilities
+     */
+
+    document.getElementById(
+        "churnProbability"
+    ).textContent =
+        churnProbability.toFixed(1) + "%";
+
+
+    document.getElementById(
+        "noChurnProbability"
+    ).textContent =
+        noChurnProbability.toFixed(1) + "%";
+
+
+    /*
+     * Update bars
+     */
+
+    document.getElementById(
+        "churnBar"
+    ).style.width =
+        churnProbability + "%";
+
+
+    document.getElementById(
+        "noChurnBar"
+    ).style.width =
+        noChurnProbability + "%";
+
+
+    /*
+     * Show prediction
+     */
+
+    document.getElementById(
+        "predictionEmpty"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "predictionContent"
+    ).style.display = "block";
+
+}
+
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+function showLoading(show) {
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        show ? "block" : "none";
+
+}
+
+
+
+/* ============================================================
+   ERROR
+============================================================ */
+
+function showError(message) {
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+
+    error.textContent =
+        message;
+
+
+    error.style.display =
+        "block";
+
+}
+
+
+function hideError() {
+
+    document.getElementById(
+        "error"
+    ).style.display =
+        "none";
+
+}
+
+
+loadCustomers();
+
+</script>
+
+
+</body>
+
+</html>

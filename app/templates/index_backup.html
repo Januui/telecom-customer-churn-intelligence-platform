@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Telecom Customer Churn Prediction</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .header {
+            background: #172033;
+            color: white;
+            padding: 22px 40px;
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+            margin-top: 7px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e1e5ea;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 17px;
+            color: #172033;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: #374151;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px 11px;
+            border: 1px solid #cfd5dc;
+            border-radius: 5px;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .button-container {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .result {
+            display: none;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .result-box {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 18px;
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 21px;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .prediction-churn {
+            color: #dc2626;
+        }
+
+        .prediction-safe {
+            color: #15803d;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            font-size: 12px;
+            padding: 25px;
+        }
+
+        @media (max-width: 800px) {
+            .form-grid,
+            .result-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .form-grid,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-content">
+        <h1>Telecom Customer Churn Prediction</h1>
+        <p>Customer information and churn prediction system</p>
+    </div>
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+        <h2>Customer Prediction</h2>
+        <p>Enter the customer's details below to generate a churn prediction.</p>
+    </div>
+
+
+    <!-- CUSTOMER INFORMATION -->
+
+    <div class="card">
+
+        <h3>Customer Information</h3>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Gender</label>
+                <select id="gender">
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Senior Citizen</label>
+                <select id="SeniorCitizen">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Partner</label>
+                <select id="Partner">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Dependents</label>
+                <select id="Dependents">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tenure (months)</label>
+                <input type="number" id="tenure" min="0" max="72" value="12">
+            </div>
+
+            <div class="form-group">
+                <label>Monthly Charges</label>
+                <input type="number" id="MonthlyCharges" step="0.01" value="70">
+            </div>
+
+            <div class="form-group">
+                <label>Total Charges</label>
+                <input type="number" id="TotalCharges" step="0.01" value="840">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Service</label>
+                <select id="PhoneService">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Multiple Lines</label>
+                <select id="MultipleLines">
+                    <option value="No phone service">No phone service</option>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Internet Service</label>
+                <select id="InternetService">
+                    <option value="DSL">DSL</option>
+                    <option value="Fiber optic">Fiber optic</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Online Security</label>
+                <select id="OnlineSecurity">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No internet service">No internet service</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Online Backup</label>
+                <select id="OnlineBackup">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No internet service">No internet service</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Device Protection</label>
+                <select id="DeviceProtection">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No internet service">No internet service</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tech Support</label>
+                <select id="TechSupport">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No internet service">No internet service</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Streaming TV</label>
+                <select id="StreamingTV">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No internet service">No internet service</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Streaming Movies</label>
+                <select id="StreamingMovies">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No internet service">No internet service</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Contract</label>
+                <select id="Contract">
+                    <option value="Month-to-month">Month-to-month</option>
+                    <option value="One year">One year</option>
+                    <option value="Two year">Two year</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Paperless Billing</label>
+                <select id="PaperlessBilling">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select id="PaymentMethod">
+                    <option value="Electronic check">Electronic check</option>
+                    <option value="Mailed check">Mailed check</option>
+                    <option value="Bank transfer (automatic)">
+                        Bank transfer (automatic)
+                    </option>
+                    <option value="Credit card (automatic)">
+                        Credit card (automatic)
+                    </option>
+                </select>
+            </div>
+
+        </div>
+
+
+        <div class="button-container">
+            <button id="predictButton" onclick="predictCustomer()">
+                Generate Prediction
+            </button>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div id="resultCard" class="card result">
+
+        <h3>Prediction Result</h3>
+
+        <div class="result-grid">
+
+            <div class="result-box">
+                <div class="result-label">
+                    Churn Prediction
+                </div>
+
+                <div id="prediction"
+                     class="result-value">
+                    -
+                </div>
+            </div>
+
+
+            <div class="result-box">
+                <div class="result-label">
+                    Probability of No Churn
+                </div>
+
+                <div id="noChurn"
+                     class="result-value">
+                    -
+                </div>
+            </div>
+
+
+            <div class="result-box">
+                <div class="result-label">
+                    Probability of Churn
+                </div>
+
+                <div id="churn"
+                     class="result-value">
+                    -
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+    Telecom Customer Churn Intelligence Platform
+</footer>
+
+
+<script>
+
+    /*
+     * IMPORTANT:
+     * Replace this URL with your API Gateway endpoint.
+     *
+     * Example:
+     *
+     * const API_URL =
+     * "https://xxxxxxxxxx.execute-api.ap-south-1.amazonaws.com/predict";
+     */
+
+    const API_URL =
+        "YOUR_API_GATEWAY_URL/predict";
+
+
+    async function predictCustomer() {
+
+        const button =
+            document.getElementById("predictButton");
+
+        const status =
+            document.getElementById("statusMessage");
+
+        const resultCard =
+            document.getElementById("resultCard");
+
+
+        button.disabled = true;
+
+        status.style.display = "block";
+        status.className = "status-message";
+        status.innerText = "Generating prediction...";
+
+
+        const customer = {
+
+            gender:
+                document.getElementById("gender").value,
+
+            SeniorCitizen:
+                Number(
+                    document.getElementById("SeniorCitizen").value
+                ),
+
+            Partner:
+                document.getElementById("Partner").value,
+
+            Dependents:
+                document.getElementById("Dependents").value,
+
+            tenure:
+                Number(
+                    document.getElementById("tenure").value
+                ),
+
+            MonthlyCharges:
+                Number(
+                    document.getElementById("MonthlyCharges").value
+                ),
+
+            TotalCharges:
+                Number(
+                    document.getElementById("TotalCharges").value
+                ),
+
+            PhoneService:
+                document.getElementById("PhoneService").value,
+
+            MultipleLines:
+                document.getElementById("MultipleLines").value,
+
+            InternetService:
+                document.getElementById("InternetService").value,
+
+            OnlineSecurity:
+                document.getElementById("OnlineSecurity").value,
+
+            OnlineBackup:
+                document.getElementById("OnlineBackup").value,
+
+            DeviceProtection:
+                document.getElementById("DeviceProtection").value,
+
+            TechSupport:
+                document.getElementById("TechSupport").value,
+
+            StreamingTV:
+                document.getElementById("StreamingTV").value,
+
+            StreamingMovies:
+                document.getElementById("StreamingMovies").value,
+
+            Contract:
+                document.getElementById("Contract").value,
+
+            PaperlessBilling:
+                document.getElementById("PaperlessBilling").value,
+
+            PaymentMethod:
+                document.getElementById("PaymentMethod").value
+        };
+
+
+        try {
+
+            const response =
+                await fetch(API_URL, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(customer)
+                });
+
+
+            if (!response.ok) {
+                throw new Error(
+                    "API request failed: "
+                    + response.status
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            /*
+             * API Gateway/Lambda may return the
+             * prediction directly OR inside body.
+             */
+
+            let predictionData = data;
+
+
+            if (data.body) {
+
+                predictionData =
+                    typeof data.body === "string"
+                    ? JSON.parse(data.body)
+                    : data.body;
+            }
+
+
+            const prediction =
+                predictionData.Churn_prediction;
+
+            const noChurn =
+                predictionData.Probability_no_churn;
+
+            const churn =
+                predictionData.Probability_churn;
+
+
+            document.getElementById("prediction")
+                .innerText =
+                prediction === 1
+                ? "Likely to Churn"
+                : "Likely to Stay";
+
+
+            document.getElementById("prediction")
+                .className =
+                prediction === 1
+                ? "result-value prediction-churn"
+                : "result-value prediction-safe";
+
+
+            document.getElementById("noChurn")
+                .innerText =
+                (noChurn * 100).toFixed(2) + "%";
+
+
+            document.getElementById("churn")
+                .innerText =
+                (churn * 100).toFixed(2) + "%";
+
+
+            resultCard.style.display = "block";
+
+
+            status.className =
+                "status-message success";
+
+            status.innerText =
+                "Prediction generated successfully.";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            status.className =
+                "status-message error";
+
+            status.innerText =
+                "Unable to generate prediction. "
+                + "Please check the API URL and try again.";
+
+        }
+
+
+        button.disabled = false;
+    }
+
+</script>
+
+</body>
+</html>
