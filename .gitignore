@@ -225,3 +225,6 @@ sagemaker/inspect_v7/
 sagemaker/model_package_v4/
 sagemaker/package_v5/
 sagemaker/test_v5/
+request.zip
+response.zip
+sagemaker/inference.py
